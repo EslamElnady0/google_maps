@@ -64,7 +64,7 @@ class _LocationScreenState extends State<LocationScreen> {
     isLoading = true;
     final response = await http.get(
       Uri.parse(
-          'https://api.openrouteservice.org/v2/directions/driving-car?api_key=$orsApiKey&start=${start.longitude},${start.latitude}&end=${destination.longitude},${destination.latitude}'),
+          'https://api.openrouteservice.org/v2/directions/foot-walking?api_key=$orsApiKey&start=${start.longitude},${start.latitude}&end=${destination.longitude},${destination.latitude}'),
     );
     print(response.body);
     if (response.statusCode == 200) {
