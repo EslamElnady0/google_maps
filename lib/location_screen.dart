@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'cubit/map_cubit.dart';
+import 'instructions_screen.dart';
 
 class LocationScreen extends StatelessWidget {
   const LocationScreen({super.key});
@@ -26,6 +27,7 @@ class LocationScreen extends StatelessWidget {
             return const Center(child: Text('Unable to load location'));
           }
 
+          // Recenter map if requested
           if (state.recenter) {
             mapController.move(state.currentLocation!, 15.0);
             context.read<MapCubit>().clearRecenter();
@@ -89,6 +91,26 @@ class LocationScreen extends StatelessWidget {
                   color: Colors.blue,
                 ),
               ),
+              // Instructions button, visible only if there are instructions
+              if (state.instructions.isNotEmpty)
+                Positioned(
+                  top: 60,
+                  left: 10,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => InstructionsScreen(
+                            instructions: state.instructions,
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.directions),
+                    label: const Text('Instructions'),
+                  ),
+                ),
             ],
           );
         },

@@ -6,6 +6,7 @@ class MapState {
   final LatLng? currentLocation;
   final List<Marker> markers;
   final List<LatLng> routePoints;
+  final List<RouteInstruction> instructions;
   final String? error;
   final bool recenter;
 
@@ -14,6 +15,7 @@ class MapState {
     this.currentLocation,
     this.markers = const [],
     this.routePoints = const [],
+    this.instructions = const [],
     this.error,
     this.recenter = false,
   });
@@ -26,11 +28,13 @@ class MapState {
     required LatLng currentLocation,
     required List<Marker> markers,
     required List<LatLng> routePoints,
+    required List<RouteInstruction> instructions,
   }) : this(
           isLoading: false,
           currentLocation: currentLocation,
           markers: markers,
           routePoints: routePoints,
+          instructions: instructions,
         );
 
   const MapState.error(String error)
@@ -44,6 +48,7 @@ class MapState {
     LatLng? currentLocation,
     List<Marker>? markers,
     List<LatLng>? routePoints,
+    List<RouteInstruction>? instructions,
     String? error,
     bool? recenter,
   }) {
@@ -52,6 +57,7 @@ class MapState {
       currentLocation: currentLocation ?? this.currentLocation,
       markers: markers ?? this.markers,
       routePoints: routePoints ?? this.routePoints,
+      instructions: instructions ?? this.instructions,
       error: error,
       recenter: recenter ?? this.recenter,
     );

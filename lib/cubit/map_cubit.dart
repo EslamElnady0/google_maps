@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:location/location.dart';
+
+import '../model/route_response.dart';
 import '../repo/map_repo.dart';
 
 part 'map_state.dart';
@@ -28,6 +30,7 @@ class MapCubit extends Cubit<MapState> {
         currentLocation: LatLng(location.latitude!, location.longitude!),
         markers: [marker],
         routePoints: [],
+        instructions: [],
       ));
 
       // Listen to location changes
@@ -59,7 +62,7 @@ class MapCubit extends Cubit<MapState> {
 
     emit(state.copyWith(isLoading: true));
     try {
-      final routePoints =
+      final routeResponse =
           await _mapRepo.getRoute(state.currentLocation!, destination);
       final destinationMarker = Marker(
         width: 80.0,
@@ -72,7 +75,8 @@ class MapCubit extends Cubit<MapState> {
           state.markers[0],
           destinationMarker
         ], // Keep current location marker
-        routePoints: routePoints,
+        routePoints: routeResponse.routePoints,
+        instructions: routeResponse.instructions,
         isLoading: false,
       ));
     } catch (e) {
@@ -94,6 +98,7 @@ class MapCubit extends Cubit<MapState> {
     emit(state.copyWith(
       markers: [marker],
       routePoints: [],
+      instructions: [],
       error: null,
     ));
   }

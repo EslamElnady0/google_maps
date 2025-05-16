@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
 import 'package:latlong2/latlong.dart';
+import '../model/route_response.dart';
 
 class MapRepo {
   final Location _location;
@@ -37,7 +38,7 @@ class MapRepo {
     return _location.onLocationChanged;
   }
 
-  Future<List<LatLng>> getRoute(LatLng start, LatLng destination) async {
+  Future<RouteResponse> getRoute(LatLng start, LatLng destination) async {
     try {
       final response = await http.get(
         Uri.parse(
@@ -47,9 +48,7 @@ class MapRepo {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        final List<dynamic> coords =
-            data['features'][0]['geometry']['coordinates'];
-        return coords.map((coord) => LatLng(coord[1], coord[0])).toList();
+        return RouteResponse.fromJson(data);
       } else {
         throw Exception('Failed to fetch route: ${response.statusCode}');
       }
